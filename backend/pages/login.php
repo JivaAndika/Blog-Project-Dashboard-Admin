@@ -30,7 +30,7 @@ if(isset($_POST['submit'])){
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Login &mdash; Stisla</title>
+  <title>Login &mdash; Blog</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="../dist/assets/modules/bootstrap/css/bootstrap.min.css">
@@ -90,36 +90,12 @@ if(isset($_POST['submit'])){
                       please fill in your password
                     </div>
                   </div>
-
-                  <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-                      <label class="custom-control-label" for="remember-me">Remember Me</label>
-                    </div>
-                  </div>
-
                   <div class="form-group">
                     <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                       Login
                     </button>
                   </div>
                 </form>
-                <!-- <div class="text-center mt-4 mb-3">
-                  <div class="text-job text-muted">Login With Social</div>
-                </div>
-                <div class="row sm-gutters">
-                  <div class="col-6">
-                    <a class="btn btn-block btn-social btn-facebook">
-                      <span class="fab fa-facebook"></span> Facebook
-                    </a>
-                  </div>
-                  <div class="col-6">
-                    <a class="btn btn-block btn-social btn-twitter">
-                      <span class="fab fa-twitter"></span> Twitter
-                    </a>                                
-                  </div>
-                </div> -->
-
               </div>
             </div>
             <div class="mt-5 text-muted text-center">
@@ -142,11 +118,6 @@ if(isset($_POST['submit'])){
   <script src="../dist/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
   <script src="../dist/assets/modules/moment.min.js"></script>
   <script src="../dist/assets/js/stisla.js"></script>
-  
-  <!-- JS Libraies -->
-
-  <!-- Page Specific JS File -->
-  
   <!-- Template JS File -->
   <script src="../dist/assets/js/scripts.js"></script>
   <script src="../dist/assets/js/custom.js"></script>

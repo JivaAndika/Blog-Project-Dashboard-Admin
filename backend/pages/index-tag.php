@@ -10,6 +10,7 @@ if (!isset($_SESSION['full_name'])){
   exit;
 }
 $tags = new Tags();
+$role = $_SESSION['roles'];
 
 $limit = 4;
 $pageActive = (isset($_GET['page'] ))  ? ( $_GET['page']) : 1;
@@ -30,7 +31,7 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Blank Page &mdash; Stisla</title>
+  <title>Admin dashboard &mdash; Blog</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="../dist/assets/modules/bootstrap/css/bootstrap.min.css">
@@ -60,11 +61,11 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
         <!-- Navbar -->
         <div class="navbar-bg"></div>
 
-        <?= include "../components/layout/navbar.php" ?>
+        <?php include "../components/layout/navbar.php" ?>
 
         <!-- Sidebar  -->
         
-        <?= include "../components/layout/sidebar.php" ?>
+        <?php include "../components/layout/sidebar.php" ?>
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
@@ -94,19 +95,22 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
                         <tr>
                           <th>No</th>
                           <th>Nama tag</th>
+                          <?php if (in_array($role, ['admin', 'author'])) : ?>
                           <th>Action</th>
+                          <?php endif ;?>
                         </tr>
                         <?php foreach($tags as $tag ):?>
                         <tr>
                           <td><?= $num ?> </td>
                           <td><?= $tag['name_tag'] ?></td>
                         
-                          
+                          <?php if (in_array($role, ['admin', 'author'])) : ?>
                           <td>
                             <button href="#" onclick="modalDetails(<?= $tag['id_tag'] ?>, '<?= $tag['name_tag'] ?>') " class="btn btn-primary mr-1"><i class="fas fa-info-circle"></i> Detail</button>
                             <a href="edit-tag.php?id_tag=<?= $tag['id_tag'] ?>" class="btn btn-success mr-1"><i class="far fa-edit"></i> Edit</a>
                             <a href="../services/delete-tag.php?id_tag=<?= $tag['id_tag'] ?>" class="btn btn-danger mr-1"><i class="fas fa-trash"></i> Delete</a>
                         </td>
+                        <?php endif; ?>
                         </tr>
                         <?php $num++ ?>
 
@@ -146,7 +150,7 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
         </section>
       </div>
        <!-- Footer -->
-       <?= include "../components/layout/footer.php"  ?>
+       <?php include "../components/layout/footer.php"  ?>
     </div>
     <!-- Modal -->
     <div class="modal fade" tabindex="-1" role="dialog" id="detailModal">

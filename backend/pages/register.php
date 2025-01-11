@@ -35,7 +35,7 @@ if(isset($_POST['submit'])){
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Register &mdash; Stisla</title>
+  <title>Register &mdash; Blog</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="../dist/assets/modules/bootstrap/css/bootstrap.min.css">
@@ -106,10 +106,17 @@ if(isset($_POST['submit'])){
                               </div>
                             </div>
                             <div class="form-group">
-                                            <label for="gender">Pilih Kategori</label>
+                                            <label for="gender">Pilih Gender</label>
                                             <select name="gender" id="gender" class="form-control selectric">
                                                 <option value="l">Laki-laki</option>
                                                 <option value="p">Perempuan</option>
+                                            </select>
+                                        </div>
+                            <div class="form-group">
+                                            <label for="roles">Pilih Role</label>
+                                            <select name="roles" id="roles" class="form-control selectric">
+                                                <option value="author">Author</option>
+                                                <option value="user">User</option>
                                             </select>
                                         </div>
                            <div class="form-group">
@@ -148,14 +155,6 @@ if(isset($_POST['submit'])){
                                 please fill in your password
                               </div>
                             </div>
-          
-                            <div class="form-group">
-                              <div class="custom-control custom-checkbox">
-                                <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-                                <label class="custom-control-label" for="remember-me">Remember Me</label>
-                              </div>
-                            </div>
-          
                             <div class="form-group">
                               <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                                 Register

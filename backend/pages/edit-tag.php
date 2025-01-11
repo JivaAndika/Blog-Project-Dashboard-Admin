@@ -59,7 +59,7 @@ if(isset($_POST['submit'])){
     <meta
         content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
         name="viewport" />
-    <title>Ecommerce Dashboard &mdash; Stisla</title>
+        <title>Admin dashboard &mdash; Blog</title>
     
 
     <!-- General CSS Files -->
@@ -100,6 +100,7 @@ if(isset($_POST['submit'])){
         gtag("js", new Date());
 
         gtag("config", "UA-94034622-3");,
+        </script>
     <!-- /END GA -->
 </head>
 
@@ -158,7 +159,7 @@ if(isset($_POST['submit'])){
     </div>
 
     <!-- General JS Scripts -->
-    <script src="../dist/assets/modules/jquery.min.js"></script>
+    <script src="../dist/assets/modules/jquery.min.js"></>
     <script src="../dist/assets/modules/popper.js"></script>
     <script src="../dist/assets/modules/tooltip.js"></script>
     <script src="../dist/assets/modules/bootstrap/js/bootstrap.min.js"></script>

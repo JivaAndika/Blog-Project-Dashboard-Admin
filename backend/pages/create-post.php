@@ -12,6 +12,14 @@ if (!isset($_SESSION['full_name'])){
     </script>";
     die;
 }
+$role = $_SESSION['roles'];
+if (!in_array($role, ['admin', 'author'])){
+  echo "<script>
+  alert('Anda tidak memiliki akses ke halaman ini');
+  window.location.href = 'index.php';
+  </script>";
+  die;
+}
 
 $UsersModel = new Users();
 $users = $UsersModel->all();
@@ -55,7 +63,7 @@ if(isset($_POST['submit'])){
     <meta
         content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
         name="viewport" />
-    <title>Ecommerce Dashboard &mdash; Stisla</title>
+        <title>Admin dashboard &mdash; Blog</title>
     
 
     <!-- General CSS Files -->

@@ -15,7 +15,7 @@
       >
     </li>
   
-    <li class="menu-header">Menu</li>
+    <li class="menu-header">Home</li>
     <li class="dropdown">
       <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"
         ><i class="fas fa-newspaper"></i><span>Post</span></a

@@ -84,26 +84,13 @@ class Posts extends Model {
       $result = mysqli_query($this->db, $query);
       return $this->convert_data($result);
     }
-    public function update($id, $datas){
+    public function update($id, $datas) {
       $tags_id = $datas['post']['tag_id_pivot'];
       $attachment = "";
   
       // Cek apakah user mengunggah file baru
       if ($datas["files"]["attachment_post"]["name"] !== "") {
-          // Mendapatkan nama file lama dari database
-          $query = "SELECT attachment_post FROM {$this->table} WHERE {$this->primary_key} = '$id'";
-          $result = mysqli_query($this->db, $query);
-          $data = mysqli_fetch_assoc($result);
-  
-          // Hapus file lama jika ada
-          if ($data && !empty($data['attachment_post'])) {
-              $file_path = "./../assets/img/posts/" . $data['attachment_post'];
-              if (file_exists($file_path)) {
-                  unlink($file_path);
-              }
-          }
-  
-          // Proses file baru
+          // Proses file baru terlebih dahulu
           $nama_file = $datas["files"]["attachment_post"]["name"];
           $tmp_name = $datas["files"]["attachment_post"]["tmp_name"];
           $ekstensi_file = pathinfo($nama_file, PATHINFO_EXTENSION);
@@ -117,30 +104,45 @@ class Posts extends Model {
               return "Ukuran file yang anda masukkan terlalu besar";
           }
   
-          $nama_file = random_int(1000, 9999) . "." . $ekstensi_file;
-          $destination = "./../assets/img/posts/" . $nama_file;
+          $nama_file_baru = random_int(1000, 9999) . "." . $ekstensi_file;
+          $destination = "./../assets/img/posts/" . $nama_file_baru;
   
           // Kompres gambar sebelum menyimpannya
           if (!$this->compress_image($tmp_name, $destination, 75)) {
               return "Gagal mengompres gambar.";
           }
-          
-          $attachment = $nama_file;
+  
+          $attachment = $nama_file_baru;
+  
+          // Mendapatkan nama file lama dari database
+          $query = "SELECT attachment_post FROM {$this->table} WHERE {$this->primary_key} = '$id'";
+          $result = mysqli_query($this->db, $query);
+          $data = mysqli_fetch_assoc($result);
+  
+          // Hapus file lama jika ada
+          if ($data && !empty($data['attachment_post'])) {
+              $file_path = "./../assets/img/posts/" . $data['attachment_post'];
+              if (file_exists($file_path)) {
+                  unlink($file_path);
+              }
+          }
       }
+  
       $rawContents = $datas["post"]["content"];
       $rawContent = mysqli_real_escape_string($this->db, $rawContents);
+  
       // Update data post
-      $datas = [
+      $datas_update = [
           "tittle" => $datas["post"]["tittle"],
-          "user_id" => $datas["post"]["user_id"],
           "category_id" => $datas["post"]["category_id"],
           "content" => $rawContents
       ];
+  
       if ($attachment !== '') {
-          $datas['attachment_post'] = $attachment;
+          $datas_update['attachment_post'] = $attachment;
       }
   
-      parent::update_data($id, $this->primary_key, $datas, $this->table);
+      parent::update_data($id, $this->primary_key, $datas_update, $this->table);
   
       // Hapus data pivot lama
       $query_delete = "DELETE FROM pivot_posts_tags WHERE post_id_pivot = '$id'";
@@ -152,6 +154,7 @@ class Posts extends Model {
           $result = mysqli_query($this->db, $query_insert);
       }
   }
+  
   
   
     public function delete($id){
@@ -253,6 +256,17 @@ class Posts extends Model {
       $result = mysqli_query($this->db, $query);
       return $this->convert_data($result);
     }
+    public function SelectPostAsRole($id_user, $starData, $limit){
+      $query = "SELECT posts.*,
+      users.*,
+      categories.name_category
+      FROM posts
+      JOIN categories ON posts.category_id = categories.id_category
+      JOIN users ON posts.user_id = users.id_user
+      WHERE user_id = $id_user LIMIT $starData , $limit";
+      $result = mysqli_query($this->db, $query);
+      return $this->convert_data($result);
+    }
 
     public function FindPostAsBlog($id_post){
       $query = "SELECT posts.*, categories.*, users.*, pivot_posts_tags.*,  tags.* FROM posts JOIN categories ON posts.category_id = categories.id_category JOIN users ON posts.user_id = users.id_user JOIN pivot_posts_tags ON pivot_posts_tags.post_id_pivot = posts.id_post JOIN tags ON pivot_posts_tags.tag_id_pivot = tags.id_tag WHERE posts.id_post = $id_post";
@@ -275,6 +289,27 @@ class Posts extends Model {
                 WHERE posts.category_id = {$id} AND posts.id_post != {$exclude_id}
                 ORDER BY posts.id_post DESC 
                 LIMIT 4 
+               ";
+      $result = mysqli_query($this->db, $query);
+      return $this->convert_data($result);
+    }
+    public function ShowPostAtHome(){
+      $query = "SELECT 
+            posts.id_post,
+            posts.attachment_post, 
+            posts.tittle,
+            posts.created_at, 
+            categories.name_category, 
+            posts.user_id, 
+            users.full_name, 
+            users.avatar
+        FROM posts 
+        JOIN categories ON posts.category_id = categories.id_category 
+        JOIN users ON posts.user_id = users.id_user 
+        JOIN pivot_posts_tags ON pivot_posts_tags.post_id_pivot = posts.id_post 
+        JOIN tags ON pivot_posts_tags.tag_id_pivot = tags.id_tag 
+        ORDER BY posts.id_post DESC 
+        LIMIT 1
                ";
       $result = mysqli_query($this->db, $query);
       return $this->convert_data($result);

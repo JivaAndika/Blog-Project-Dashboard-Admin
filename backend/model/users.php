@@ -79,6 +79,7 @@ class Users extends Model {
         $bio = $datas['post']['bio'];
         $created_at_user = $datas['post']['created_at_user'];
         $phone = $datas['post']['phone'];
+        $roles = $datas['post']['roles'];
         $avatar = $datas['files']['avatar'];
 
         if($password !== $confirm_password){
@@ -105,7 +106,7 @@ class Users extends Model {
         $nama_file = random_int(1000, 9999) . "." . $ekstensi_file;
         move_uploaded_file($tmp_name, "./../assets/img/users/" . $nama_file);
         $password = base64_encode($password);
-        $query_register = "INSERT INTO {$this->table} (full_name , avatar , email, job, password, gender, phone, bio, created_at_user ) VALUES ('$name','$nama_file','$email', '$job', '$password', '$gender', '$phone', '$bio', '$created_at_user')";
+        $query_register = "INSERT INTO {$this->table} (full_name , avatar , email, job, password, gender, phone, bio, created_at_user, roles ) VALUES ('$name','$nama_file','$email', '$job', '$password', '$gender', '$phone', '$bio', '$created_at_user', '$roles')";
         $result = mysqli_query($this->db, $query_register);
         if(!$result){
             return "Registrasi gagal";
@@ -140,12 +141,14 @@ class Users extends Model {
         $_SESSION['avatar'] = $user['avatar'];
         $_SESSION['phone'] = $user['phone'];
         $_SESSION['gender'] = $user['gender'];
+        $_SESSION['roles'] = $user['roles'];
         $_SESSION['bio'] = $user['bio'];
         $detail_user = [
             "full_name" => $user['full_name'],
             "phone" => $user['phone'],
             "job" => $user['job'],
             "gender" => $user['gender'],
+            "roles" => $user['roles'],
             "email" => $user['email'],
             "bio" => $user['bio'],
             "avatar" => $user['avatar']

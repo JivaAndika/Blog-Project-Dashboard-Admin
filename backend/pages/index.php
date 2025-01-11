@@ -26,6 +26,10 @@ foreach ($show_tag as $tag) {
     $groupedTags[$tag['post_id_pivot']][] = $tag['name_tag'];
 }
 
+$role = $_SESSION['roles'];
+
+// var_dump($role);
+
 $limit = 5;
 $pageActive = (isset($_GET['page'] ))  ? ( $_GET['page']) : 1;
 $startData = $limit * $pageActive - $limit;
@@ -38,7 +42,6 @@ $prev = ($pageActive > 1) ? $pageActive - 1 : 1;
 $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -47,7 +50,7 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
       content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
       name="viewport"
     />
-    <title>Ecommerce Dashboard &mdash; Stisla</title>
+    <title>Admin dashboard &mdash; Blog</title>
     <!-- General CSS Files -->
      
     <link
@@ -65,22 +68,10 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
    
 
     <!-- CSS Libraries -->
-    <link
-      rel="stylesheet"
-      href="../dist/assets/modules/jqvmap/dist/jqvmap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="../dist/assets/modules/summernote/summernote-bs4.css"
-    />
-    <link
-      rel="stylesheet"
-      href="../dist/assets/modules/owlcarousel2/dist/assets/owl.carousel.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="../dist/assets/modules/owlcarousel2/dist/assets/owl.theme.default.min.css"
-    />
+    <link rel="stylesheet" href="../dist/assets/modules/jqvmap/dist/jqvmap.min.css"/>
+    <link rel="stylesheet" href="../dist/assets/modules/summernote/summernote-bs4.css"/>
+    <link rel="stylesheet" href="../dist/assets/modules/owlcarousel2/dist/assets/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="../dist/assets/modules/owlcarousel2/dist/assets/owl.theme.default.min.css"/>
 
     <!-- Template CSS -->
     <link rel="stylesheet" href="../dist/assets/css/style.css" />
@@ -107,13 +98,9 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
       <div class="main-wrapper main-wrapper-1">
         <div class="navbar-bg"></div>
         <!-- Navbar -->
-
-        <?= include "./../components/layout/navbar.php" ?>
-
+        <?php include "./../components/layout/navbar.php" ?>
         <!-- Sidebar  -->
-        
-        <?= include "./../components/layout/sidebar.php" ?>
-
+        <?php include "./../components/layout/sidebar.php" ?>
         <!-- Main Content -->
         <div class="main-content">
           <section class="section">
@@ -121,7 +108,7 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
               <div class="col-lg-4 col-md-4 col-sm-12">
                 <div class="card card-statistic-2">
                   <div class="card-icon shadow-primary bg-primary">
-                    <i class="fas fa-user"></i>
+                  <i class="fas fa-tag"></i>
                   </div>
                   <div class="card-wrap">
                     <div class="card-header">
@@ -147,7 +134,7 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
               <div class="col-lg-4 col-md-4 col-sm-12">
                 <div class="card card-statistic-2">
                   <div class="card-icon shadow-primary bg-primary">
-                    <i class="fas fa-user"></i>
+                  <i class="fas fa-newspaper"></i>
                   </div>
                   <div class="card-wrap">
                     <div class="card-header">
@@ -181,7 +168,7 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
                           <td><?= $Posts['full_name'] ?></td>
                           <td style="max-width: 200px; "><?= isset($groupedTags[$Posts['id_post']]) ? implode(', ', $groupedTags[$Posts['id_post']]) : 'No tags' ?></td>
                           <td>
-                            <?= $Posts['category_id'] ?>
+                            <?= $Posts['name_category'] ?>
                           </td>
                         </tr>
                         <?php $num++ ?>
@@ -219,7 +206,7 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
           </section>
         </div>
        <!-- Footer -->
-        <?= include "./../components/layout/footer.php"  ?>
+        <?php include "./../components/layout/footer.php"  ?>
       </div>
     </div>
 

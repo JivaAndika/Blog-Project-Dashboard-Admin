@@ -50,7 +50,7 @@ $selected_gender = $User[0]['gender'];
     <meta
         content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
         name="viewport" />
-    <title>Ecommerce Dashboard &mdash; Stisla</title>
+        <title>Admin dashboard &mdash; Blog</title>
 
     <!-- General CSS Files -->
     <link

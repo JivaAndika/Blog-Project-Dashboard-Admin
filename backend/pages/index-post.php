@@ -19,22 +19,28 @@ $groupedTags = [];
 foreach ($show_tag as $tag) {
     $groupedTags[$tag['post_id_pivot']][] = $tag['name_tag'];
 }
-
+$id = $_SESSION['id'];
+$role = $_SESSION['roles'];
 
 
 
 $limit = 3;
 $pageActive = (isset($_GET['page'] ))  ? ( $_GET['page']) : 1;
 $startData = $limit * $pageActive - $limit;
-$length = count($Posts->all());
+if (in_array($role, ['admin', 'user'])){
+  $length = count($Posts->all());
+}
+if (in_array($role, ['author'])){
+  $length = count($Posts->SelectPostAsAuthor($id));
+}
 $countPage = ceil($length / $limit);
 $num = ($pageActive - 1) * $limit + 1;
 $Posts_detail = $Posts->all2($startData, $limit);
+$postAsAuthor = $Posts->SelectPostAsRole($id,$startData, $limit);
 
 $prev = ($pageActive > 1) ? $pageActive - 1 : 1;
 $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
 
-// var_dump($Posts_detail);
 
 ?>
 
@@ -44,7 +50,7 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Blank Page &mdash; Stisla</title>
+  <title>Admin dashboard &mdash; Blog</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="../dist/assets/modules/bootstrap/css/bootstrap.min.css">
@@ -55,10 +61,7 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
   <!-- Template CSS -->
   <link rel="stylesheet" href="../dist/assets/css/style.css">
   <link rel="stylesheet" href="../dist/assets/css/components.css">
-  <style>
   
-
-  </style>
 <!-- Start GA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
 <script>
@@ -76,42 +79,72 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
         <!-- Navbar -->
         <div class="navbar-bg"></div>
 
-        <?= include "../components/layout/navbar.php" ?>
+        <?php include "../components/layout/navbar.php" ?>
 
         <!-- Sidebar  -->
         
-        <?= include "../components/layout/sidebar.php" ?>
+        <?php include "../components/layout/sidebar.php" ?>
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Halaman kategori</h1>
+          <?php if (in_array($role, ['admin', 'user'])) : ?>
+            <h1>Halaman Post</h1>
+            <?php endif;?>
+            <?php if (in_array($role, ['author'])) : ?>
+              <h1>My Post</h1>
+            <?php endif;?>
           </div>
           <div class="section-body">  
           <div class="row">
-  <?php foreach ($Posts_detail as $post): ?>
-    <div class="col-md-4 col-sm-6 mb-4">
-      <div class="card h-100">
-        <img src="../assets/img/posts/<?= $post['attachment_post'] ?>" class="card-img-top " style="max-height: 200px; background-position: center; object-fit: ,  ;" alt="<?= $post['tittle'] ?>">
-        <div class="card-body">
-          <h5 class="card-title text-truncate" style="max-width: 200px; object-fit: contain;"> <?= $post['tittle'] ?> </h5>
-          <p class="card-text">Author: <?= $post['full_name'] ?></p>
-          <p class="card-text">Created at: <?= $post['created_at'] ?></p>
-        </div>
-        <div class="card-footer d-flex  justify-content-between">
-          <button onclick='modalDetails("<?= $post["content"] ?>")'  class="btn btn-primary btn-sm">
-            <i class="fas fa-info-circle"></i> Detail
-          </button>
-          <a href="edit-post.php?id_post=<?= $post['id_post'] ?>" class="btn btn-success btn-sm">
-            <i class="far fa-edit"></i> Edit
-          </a>
-          <a href="../services/delete-post.php?id_post=<?= $post['id_post'] ?>" class="btn btn-danger btn-sm">
-            <i class="fas fa-trash"></i> Delete
-          </a>
-        </div>
-      </div>
-    </div>
+          <table class="table table-striped">
+  <tr>
+    <th>No</th>
+    <th style="width: 250px;">Judul Post</th>
+    <th>Gambar </th>
+    <th>Author</th>
+    <?php if (in_array($role, ['admin', 'author'])) : ?>
+    <th>Action</th>
+    <?php endif; ?>
+  </tr>
+  <?php if(in_array($role, haystack: ['admin', 'user'])) :?>
+    <?php foreach ($Posts_detail as $post): ?>
+  <tr>
+    <td><?= $num ?></td>
+    <td ><?= $post['tittle'] ?></td>
+    <td>
+      <img src="../assets/img/posts/<?= $post['attachment_post'] ?>" alt="image post" width="80" class="my-3">
+    </td>
+    <td><?= $post['full_name'] ?></td>
+    <?php if ($_SESSION['roles'] === 'admin') : ?>
+                          <td>
+                            <a href="edit-post.php?id_post=<?= $post['id_post'] ?>" class="btn btn-success mr-1"><i class="far fa-edit"></i> Edit</a>
+                            <a href="../services/delete-post.php?id_post=<?= $post['id_post'] ?>" class="btn btn-danger mr-1"><i class="fas fa-trash"></i> Delete</a>
+                        </td>
+                        <?php endif; ?>
+  </tr>
+  <?php $num++; ?>
   <?php endforeach; ?>
+  <?php endif; ?>
+  <?php if($_SESSION['roles'] === 'author' ) :?>
+  <?php foreach ($postAsAuthor as $post): ?>
+  <tr>
+    <td><?= $num ?></td>
+    <td class="w-20"><?= $post['tittle'] ?></td>
+    <td>
+      <img src="../assets/img/posts/<?= $post['attachment_post'] ?>" alt="image post" width="80" class="my-3">
+    </td>
+    <td><?= $post['full_name'] ?></td>
+                          <td>
+                            <a href="edit-post.php?id_post=<?= $post['id_post'] ?>" class="btn btn-success mr-1"><i class="far fa-edit"></i> Edit</a>
+                            <a href="../services/delete-post.php?id_post=<?= $post['id_post'] ?>" class="btn btn-danger mr-1"><i class="fas fa-trash"></i> Delete</a>
+                        </td>
+  </tr>
+  <?php $num++; ?>
+  <?php endforeach; ?>
+  <?php endif; ?>
+</table>
+
 </div>
 
 <div class="d-flex justify-content-center mt-4"> 
@@ -144,7 +177,7 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
         </section>
       </div>
        <!-- Footer -->
-       <?= include "../components/layout/footer.php"  ?>
+       <?php include "../components/layout/footer.php"  ?>
     </div>
     <!-- Modal -->
     <div class="modal fade" tabindex="-1" role="dialog" id="detailModal">
@@ -203,8 +236,8 @@ $next = ($pageActive < $countPage) ? $pageActive + 1 :$countPage ;
 
   <!-- Page Specific JS File -->
   <script src="../dist/assets/js/page/bootstrap-modal.js"></script>
+  
   <!-- Template JS File -->
-
   <script src="../dist/assets/js/scripts.js"></script>
   <script src="../dist/assets/js/custom.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

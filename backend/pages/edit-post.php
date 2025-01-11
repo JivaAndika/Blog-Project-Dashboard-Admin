@@ -86,7 +86,7 @@ if(isset($_POST['submit'])){
     <meta
         content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
         name="viewport" />
-    <title>Ecommerce Dashboard &mdash; Stisla</title>
+        <title>Admin dashboard &mdash; Blog</title>
     
 
     <!-- General CSS Files -->
@@ -183,16 +183,6 @@ if(isset($_POST['submit'])){
                                         <div class="form-group">
                                             <label for="content">Edit konten</label>
                                             <textarea class="form-control" name="content" id="content"><?= $post_find[0]['content'] ?></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="user_id">Edit Author</label>
-                                            <select name="user_id" id="user_id" class="form-control selectric">
-                                               <?php foreach ($user_all as $user) : ?>
-                                                <option value="<?= $user['id_user'] ?>">
-                                                    <?= $user['full_name'] ?>
-                                                </option>
-                                                <?php endforeach; ?>
-                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="category_id">Edit kategori</label>

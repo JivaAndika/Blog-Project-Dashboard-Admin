@@ -9,7 +9,6 @@ $TagsModel = new Tags();
 $PostsModel = new Posts();
 $UsersModel = new Users();
 if (!isset($_GET['id_user']) || empty($_GET['id_user'])) {
-  // Jika tidak ada parameter atau kosong, arahkan ke index.php
   header("Location: index.php");
   exit();
 }

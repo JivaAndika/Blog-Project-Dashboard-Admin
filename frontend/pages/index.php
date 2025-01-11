@@ -11,6 +11,7 @@ $TagsModel = new Tags();
 $UsersModel = new Users();
 
 $Posts = $PostsModel->ShowLatestPosts();
+$postAtHome = $PostsModel->ShowPostAtHome();
 $Categories = $CategoriesModel->all();
 $Categories = array_slice($Categories, 0, 6);
 $Tags = $TagsModel->all();
@@ -20,6 +21,7 @@ $Users = array_slice($Users, 0, 5);
 $TagsCount = $TagsModel->count_tag();
 $TagsCount = array_slice($TagsCount, 0, 6);
 
+$formattedDate = date("d F Y", strtotime($postAtHome[0]['created_at']));
 
 ?>
 <!DOCTYPE html>
@@ -40,8 +42,9 @@ $TagsCount = array_slice($TagsCount, 0, 6);
     <!-- HERO SECTION  -->
     <section class="hero pt-20">
       <div class="container mx-auto grid md:grid-cols-3 px-4 gap-6">
-        <div
-          class="news bg-[url('./../img/hero.jpg')] relative h-72 md:h-full bg-cover flex flex-col gap-2 col-span-2"
+        <a
+          class="news bg-[url('./../../backend/assets/img/posts/<?= $postAtHome[0]['attachment_post'] ?>')] relative h-72 md:h-full bg-cover flex flex-col gap-2 col-span-2" 
+          href="../data/blog.php?id_post=<?= base64_encode($postAtHome[0]['id_post']) ?>"
         >
           <span
             class="absolute bottom-0 flex flex-col gap-2 justify-end text-left bg-gradient-to-t from-[#000000a4] h-full w-full p-3 text-white"
@@ -49,28 +52,24 @@ $TagsCount = array_slice($TagsCount, 0, 6);
             <div class="desc_news">
               <span
                 class="desc_news font-bold bg-[#e72222] md:text-lg lg:text-xl rounded-sm p-1 py-[2px]"
-                >News</span
+                ><?= $postAtHome[0]['name_category'] ?></span
               >
             </div>
             <h1 class="text-2xl md:text-3xl lg:text-5xl font-bold">
-              Hiruk Pikuk Jakarta: Antara Kesibukan dan Polusi
+            <?= $postAtHome[0]['tittle'] ?>
             </h1>
             <div class="flex gap-3">
-              <div class="author flex items-center gap-1 cursor-pointer">
-                <i class="ph ph-user-circle"> </i>
-                <span class="text-sm lg:text-base"> Anonim </span>
+              <div class="author flex items-center gap-2 cursor-pointer">
+                <img src="./../../backend/assets/img/users/<?= $postAtHome[0]['avatar'] ?>" alt="profile" width="25">
+                <span class="text-sm lg:text-base"><?= $postAtHome[0]['full_name'] ?></span>
               </div>
               |
               <div class="date">
-                <span class="text-sm lg:text-base"> 12 Agustus 2023 </span>
-              </div>
-
-              <div class="time">
-                <span class="text-sm lg:text-base"> 10:30 AM </span>
+                <span class="text-sm lg:text-base"><?= $formattedDate ?></span>
               </div>
             </div>
           </span>
-        </div>
+        </a>
         <div class="latest_news flex flex-col">
           <div class="header_news flex items-center justify-center mb-4 gap-3">
             <div class="flex-grow border border-gray-500"></div>

@@ -81,9 +81,17 @@ class Categories extends Model {
     public function find($id){
         return parent::find_data($id,$this->primary_key,$this->table);
     }
-    public function update($id, $datas){
+    public function update($id, $datas) {
         $attachment = "";
+        
+        // Cek jika ada file yang diupload
         if ($datas["files"]["attachment_category"]["name"] !== "") {
+            // Mendapatkan nama file lama dari database
+            $query = "SELECT attachment_category FROM {$this->table} WHERE {$this->primary_key} = '$id'";
+            $result = mysqli_query($this->db, $query);
+            $data = mysqli_fetch_assoc($result);
+    
+            // Proses upload file baru
             $nama_file = $datas["files"]["attachment_category"]["name"];
             $tmp_name = $datas["files"]["attachment_category"]["tmp_name"];
             $ekstensi_file = pathinfo($nama_file, PATHINFO_EXTENSION);
@@ -147,8 +155,17 @@ class Categories extends Model {
             imagedestroy($image_p);
     
             $attachment = $nama_file_baru;
+    
+            // Hapus file lama jika ada
+            if ($data && !empty($data['attachment_category'])) {
+                $file_path = "./../assets/img/categories/" . $data['attachment_category'];
+                if (file_exists($file_path)) {
+                    unlink($file_path);
+                }
+            }
         }
     
+        // Update data di database
         $update_data = [
             "name_category" => $datas["post"]["name_category"]
         ];
