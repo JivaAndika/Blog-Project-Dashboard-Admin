@@ -46,11 +46,3 @@ Built with security in mind, including form validation and input sanitization.
 | **Bootstrap**    | Responsive grid and components          |
 
 ---
-
-## 📂 About This Website
-
-This website is an interactive news platform designed to provide up-to-date and interesting information. On the main interface, users can enjoy featured news such as sports, travel, and other popular topics. There are also news categories and tags that make it easy to explore the content.
-
-The dashboard section is designed for admins, providing management features such as blog, category and tag management, along with informative blog statistics. With a clean and modern design, this platform is suitable for both news readers and content managers.
-
----
