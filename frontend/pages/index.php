@@ -50,10 +50,12 @@ $formattedDate = date("d F Y", strtotime($postAtHome[0]['created_at']));
             class="absolute bottom-0 flex flex-col gap-2 justify-end text-left bg-gradient-to-t from-[#000000a4] h-full w-full p-3 text-white"
           >
             <div class="desc_news">
-              <span
-                class="desc_news font-bold bg-[#e72222] md:text-lg lg:text-xl rounded-sm p-1 py-[2px]"
-                ><?= $postAtHome[0]['name_category'] ?></span
-              >
+            <span
+  id="randomBgColor"
+  class="desc_news font-bold md:text-lg lg:text-xl rounded-sm p-1 py-[3px]"
+>
+  <?= $postAtHome[0]['name_category'] ?>
+</span>
             </div>
             <h1 class="text-2xl md:text-3xl lg:text-5xl font-bold">
             <?= $postAtHome[0]['tittle'] ?>
@@ -186,6 +188,30 @@ $formattedDate = date("d F Y", strtotime($postAtHome[0]['created_at']));
     </section>
     <!-- FOOTER -->
     <?php include_once ('./../layout/footer.php') ?>
+    
+<script>
+  // Fungsi untuk menghasilkan warna random
+  function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  // Ambil elemen dengan ID
+  const element = document.getElementById('randomBgColor');
+  
+  // Ubah background color elemen
+  if (element) {
+    element.style.backgroundColor = getRandomColor();
+
+
+
+    
+  }
+</script>
     <script src="script.js"></script>
   </body>
 </html>
