@@ -15,7 +15,7 @@
         <div
           class="toggle lg:hidden text-3xl cursor-pointer"
           id="open"
-          onclick="openNavbar() "
+          onclick="openNavbar()"
         >
           <i class="ph ph-list"></i>
         </div>
@@ -84,6 +84,13 @@
       </div>
     </aside>
     <script>
+      const sidebar = document.getElementById("aside");
+      const openNavbar = document.getElementById("open");
+      openNavbar.addEventListener("click", function () {
+      sidebar.classList.toggle("translate-x-full");
+      });
+
+
   // Tambahkan event listener ke elemen dengan ID 'create-blog-link'
   document.addEventListener("DOMContentLoaded", function () {
     const createBlogLink = document.querySelectorAll("a[href='./../../backend/pages/index.php']");

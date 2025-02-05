@@ -212,6 +212,6 @@ $formattedDate = date("d F Y", strtotime($postAtHome[0]['created_at']));
     
   }
 </script>
-    <script src="script.js"></script>
+   
   </body>
 </html>
